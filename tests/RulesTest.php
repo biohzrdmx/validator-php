@@ -54,6 +54,19 @@
 			$this->assertIsArray($errors);
 		}
 
+		public function testExceptionGetRule() {
+			$value = 'foo';
+			$validator = Validator::newInstance()->addRule('value', $value, 'required');
+			$rule = $validator->getRule('value');
+			$rule_from_exception = null;
+			try {
+				throw new ValidationException($rule, 'Testing');
+			} catch (ValidationException $e) {
+				$rule_from_exception = $e->getRule();
+			}
+			$this->assertInstanceOf(Rule::class, $rule_from_exception);
+		}
+
 		public function testRequiredRule() {
 			# Create instance
 			$validator = Validator::newInstance();
