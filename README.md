@@ -10,24 +10,24 @@ First require `biohzrdmx/validator-php` with Composer.
 Then import the namespace, create a new `Validator` instance, add your validation rules and call the `validate` method:
 
 ```php
-	# Import namespace
-	use Validator\Validator;
+# Import namespace
+use Validator\Validator;
 
-	# Create a validator instance and add some rules
-	$validator = Validator::newInstance()
-		->addRule('name', $name)
-		->addRule('email', $email, 'email')
-		->addRule('password', $password)
-		->addRule('confirm', $confirm, 'equal', $password)
-		->validate();
+# Create a validator instance and add some rules
+$validator = Validator::newInstance()
+	->addRule('name', $name)
+	->addRule('email', $email, 'email')
+	->addRule('password', $password)
+	->addRule('confirm', $confirm, 'equal', $password)
+	->validate();
 
-	# And check the result
-	if (! $validator->isValid() ) {
-		$errors = $validator->getErrors();
-		foreach ($errors as $error) {
-			echo $error->message;
-		}
+# And check the result
+if (! $validator->isValid() ) {
+	$errors = $validator->getErrors();
+	foreach ($errors as $error) {
+		echo $error->message;
 	}
+}
 ```
 
 The `isValid` method will return `false` if something isn't right and `true` if all your rules passed.
@@ -39,7 +39,7 @@ In case of failure you may call the `getErrors` method which will return an arra
 To add a validation rule you must call the `addRule` method, which has the following signature:
 
 ```php
-	addRule($name, $value, $type = 'required', $opt = null) { ... }
+addRule($name, $value, $type = 'required', $opt = null) { ... }
 ```
 
 The `$name` parameter identifies the rule and will be used for error reporting, while the `$value` refers to the variable you want to check.
@@ -63,10 +63,10 @@ You may specify any of the following built-in rule types for `$type`:
 There are two ways of adding custom rules, the first and easiest is to just pass a `Closure` as the rule `opt`:
 
 ```php
-	$validator->addRule('Name', $name, 'custom', function($value) {
-		# We do not accept Homers
-		return $name != 'Homer';
-	});
+$validator->addRule('Name', $name, 'custom', function($value) {
+	# We do not accept Homers
+	return $name != 'Homer';
+});
 ```
 
 The function receives the `$value` and must return `true` or `false` as the result of your validation, anything that is not `true` will make the rule fail.
@@ -76,17 +76,17 @@ This is recommended for one-off validation rules.
 The second way is intended for validation rules that you will use in more than one place and/or require a complex logic. To do so, you will need to create a class that extends `Rule` and implements the `check` method:
 
 ```php
-	class CustomRule extends Rule {
+class CustomRule extends Rule {
 
-		public function check() {
-			$ret = $name != 'Homer';
-			if (! $ret ) {
-				$message = sprintf('We do not accept Homers');
-				throw new ValidationException($this, $message);
-			}
-			return $ret;
+	public function check() {
+		$ret = $name != 'Homer';
+		if (! $ret ) {
+			$message = sprintf('We do not accept Homers');
+			throw new ValidationException($this, $message);
 		}
+		return $ret;
 	}
+}
 ```
 
 Note that you must throw a `ValidationException` when the validation fails AND return either `true` or `false` as in the above case.
@@ -94,7 +94,7 @@ Note that you must throw a `ValidationException` when the validation fails AND r
 Now that you've created your rule class, just pass its name as the rule type:
 
 ```php
-	$validator->addRule('Name', $name, CustomRule::class);
+$validator->addRule('Name', $name, CustomRule::class);
 ```
 
 As you can see, custom validation classes provide more control as you may also specify a failure message.
