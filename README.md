@@ -15,18 +15,18 @@ use Validator\Validator;
 
 # Create a validator instance and add some rules
 $validator = Validator::newInstance()
-	->addRule('name', $name)
-	->addRule('email', $email, 'email')
-	->addRule('password', $password)
-	->addRule('confirm', $confirm, 'equal', $password)
-	->validate();
+  ->addRule('name', $name)
+  ->addRule('email', $email, 'email')
+  ->addRule('password', $password)
+  ->addRule('confirm', $confirm, 'equal', $password)
+  ->validate();
 
 # And check the result
 if (! $validator->isValid() ) {
-	$errors = $validator->getErrors();
-	foreach ($errors as $error) {
-		echo $error->message;
-	}
+  $errors = $validator->getErrors();
+  foreach ($errors as $error) {
+    echo $error->message;
+  }
 }
 ```
 
@@ -64,8 +64,8 @@ There are two ways of adding custom rules, the first and easiest is to just pass
 
 ```php
 $validator->addRule('Name', $name, 'custom', function($value) {
-	# We do not accept Homers
-	return $name != 'Homer';
+  # We do not accept Homers
+  return $name != 'Homer';
 });
 ```
 
@@ -78,14 +78,14 @@ The second way is intended for validation rules that you will use in more than o
 ```php
 class CustomRule extends Rule {
 
-	public function check() {
-		$ret = $name != 'Homer';
-		if (! $ret ) {
-			$message = sprintf('We do not accept Homers');
-			throw new ValidationException($this, $message);
-		}
-		return $ret;
-	}
+  public function check() {
+    $ret = $name != 'Homer';
+    if (! $ret ) {
+      $message = sprintf('We do not accept Homers');
+      throw new ValidationException($this, $message);
+    }
+    return $ret;
+  }
 }
 ```
 
