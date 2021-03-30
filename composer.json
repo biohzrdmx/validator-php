@@ -1,0 +1,35 @@
+{
+    "name": "biohzrdmx/validator-php",
+    "description": "Server side form validation FTW",
+    "version": "3.0",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "biohzrdmx",
+            "email": "hi@biohzrdmx.me",
+            "homepage": "https://biohzrdmx.me"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "~0.12.80",
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "psr-4": { "Validator\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Validator\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "analyse": "phpstan analyse --configuration phpstan.neon --level 7 --error-format=json --memory-limit=1G --no-interaction --no-progress src > tests/output/phpstan.json",
+        "test": "phpunit tests"
+    },
+    "minimum-stability": "stable"
+}
